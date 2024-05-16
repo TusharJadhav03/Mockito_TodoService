@@ -4,8 +4,11 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -37,6 +40,20 @@ public class ListTest {
         assertEquals("Anjali",listMock.get(0));
         assertEquals("Tushar",listMock.get(1));
     }
+
+    @Test
+    void listMockSizeBDD() {
+        //Given
+        List<String> listBDD = mock(List.class);
+        given(listBDD.get(anyInt())).willReturn("Tushar").willReturn("Anjali");
+        //When
+        String f = listBDD.get(0);
+        String s = listBDD.get(1);
+        //Then
+        assertThat(f,is("Tushar"));
+        assertThat(s,is("Anjali"));
+    }
+
 
     @Test()
     public void listMockThrowsException() {

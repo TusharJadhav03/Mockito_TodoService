@@ -14,5 +14,9 @@ public class TodoServiceStub implements TodoService {
                 "Im from Mumbai",
                 "Im from Mumbai"
         );
+
+    }
+    public void deleteTodo(String user) {
+
     }
 }

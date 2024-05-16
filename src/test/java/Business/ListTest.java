@@ -50,7 +50,7 @@ public class ListTest {
         String f = listBDD.get(0);
         String s = listBDD.get(1);
         //Then
-        assertThat(f,is("Tushar"));
+        assertThat(f    ,is("Tushar"));
         assertThat(s,is("Anjali"));
     }
 

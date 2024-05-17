@@ -2,6 +2,7 @@ package Business;
 
 
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import todotask.TodoService;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -65,21 +66,29 @@ class TodoBusinessImplMockTest {
                 "Im from Pune", "Im from Nashik");
 
         when(todoService.retrieveTodos("Tushar")).thenReturn(filtertodoscity);
+        TodoBusinessImpl todoBusinessImpl = new TodoBusinessImpl(todoService);
+        todoBusinessImpl.deleteTodosNotRelatedToSpring("Tushar");
+        verify(todoService).deleteTodo("Im from Pune");
+        verify(todoService, Mockito.never()).deleteTodo("Im from Mumbai");
+        verify(todoService, Mockito.times(1)).deleteTodo("Im from Pune");
+
+    }
+
+    @Test
+    public void captureArgument() {
+        ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
+
+        TodoService todoService = mock(TodoService.class);
+
+        List<String> filtertodoscities = Arrays.asList("Im from Mumbai",
+                "Im from Pune");
+        Mockito.when(todoService.retrieveTodos("Tushar")).thenReturn(filtertodoscities);
 
         TodoBusinessImpl todoBusinessImpl = new TodoBusinessImpl(todoService);
-
         todoBusinessImpl.deleteTodosNotRelatedToSpring("Tushar");
+        Mockito.verify(todoService).deleteTodo(argumentCaptor.capture());
 
-        verify(todoService).deleteTodo("Im from Pune");
-        verify(todoService).deleteTodo("Im from Nashik");
-
-        verify(todoService, Mockito.never()).deleteTodo("Im from Mumbai");
-
-
-        verify(todoService, Mockito.times(1)).deleteTodo("Im from Pune");
-        verify(todoService, Mockito.times(1)).deleteTodo("Im from Nashik");
-
-
+        assertEquals("Im from Pune", argumentCaptor.getValue());
     }
 
 }

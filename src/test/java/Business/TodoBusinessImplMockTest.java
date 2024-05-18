@@ -48,10 +48,8 @@ class TodoBusinessImplMockTest {
         List<String> todos = Arrays.asList("Im from Mumbai","Im from Mumbai","Im from Mumbai,Im from Pune,Im from Pune");
         given(todoServiceBDD.retrieveTodos("Tushar")).willReturn(todos);
         TodoBusinessImpl todoBusiness = new TodoBusinessImpl(todoServiceBDD);
-
         //When
         List<String> filteredTodos = todoBusiness.retrieveTodos("Tushar");
-
         //Then
         assertThat(filteredTodos.size(),is(3));
 
@@ -61,10 +59,7 @@ class TodoBusinessImplMockTest {
     public void testDeleteNow() {
 
         TodoService todoService = mock(TodoService.class);
-
-        List<String> filtertodoscity = Arrays.asList("Im from Mumbai",
-                "Im from Pune", "Im from Nashik");
-
+        List<String> filtertodoscity = Arrays.asList("Im from Mumbai","Im from Pune", "Im from Nashik");
         when(todoService.retrieveTodos("Tushar")).thenReturn(filtertodoscity);
         TodoBusinessImpl todoBusinessImpl = new TodoBusinessImpl(todoService);
         todoBusinessImpl.deleteTodosNotRelatedToSpring("Tushar");
@@ -77,18 +72,15 @@ class TodoBusinessImplMockTest {
     @Test
     public void captureArgument() {
         ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
-
         TodoService todoService = mock(TodoService.class);
-
-        List<String> filtertodoscities = Arrays.asList("Im from Mumbai",
-                "Im from Pune");
+        List<String> filtertodoscities = Arrays.asList("Im from Mumbai", "Im from Pune");
         Mockito.when(todoService.retrieveTodos("Tushar")).thenReturn(filtertodoscities);
-
         TodoBusinessImpl todoBusinessImpl = new TodoBusinessImpl(todoService);
         todoBusinessImpl.deleteTodosNotRelatedToSpring("Tushar");
         Mockito.verify(todoService).deleteTodo(argumentCaptor.capture());
-
         assertEquals("Im from Pune", argumentCaptor.getValue());
     }
+
+
 
 }
